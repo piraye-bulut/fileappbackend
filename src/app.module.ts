@@ -6,7 +6,7 @@ import { FilesModule } from './files/files.module';
 import helmet from 'helmet';
 // Yeni middleware'leri import edin
 import { rateLimiter } from './middleware/rate-limiter.middleware';
-//import { IpFilterMiddleware } from './middleware/ip-filter.middleware';
+import { IpFilterMiddleware } from './middleware/ip-filter.middleware';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }), // .env dosyası
@@ -40,10 +40,9 @@ export class AppModule {
       .apply(rateLimiter)
       .forRoutes('*');
     // IP filtreleme middleware'i uygulamak
-   /* consumer
+    consumer
       .apply(IpFilterMiddleware)
       .forRoutes('*');
-      */
-  }
       
+  }
 }

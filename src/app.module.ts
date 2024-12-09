@@ -4,11 +4,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { FilesModule } from './files/files.module';
 import helmet from 'helmet';
-
 // Yeni middleware'leri import edin
 import { rateLimiter } from './middleware/rate-limiter.middleware';
 import { IpFilterMiddleware } from './middleware/ip-filter.middleware';
-
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }), // .env dosyası
@@ -23,6 +21,7 @@ import { IpFilterMiddleware } from './middleware/ip-filter.middleware';
         database: configService.get('DATABASE_NAME'),
         autoLoadEntities: true,
         synchronize: true,
+        logging: true,
       }),
       inject: [ConfigService],
     }),
@@ -36,15 +35,14 @@ export class AppModule {
     consumer
       .apply(helmet())
       .forRoutes('*');
-
     // Rate limiter middleware'i uygulamak
     consumer
       .apply(rateLimiter)
       .forRoutes('*');
-
     // IP filtreleme middleware'i uygulamak
     consumer
       .apply(IpFilterMiddleware)
       .forRoutes('*');
+      
   }
 }

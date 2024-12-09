@@ -10,7 +10,7 @@ export class IpFilterMiddleware implements NestMiddleware {
     const blacklist = ['203.0.113.1', '203.0.113.2']; // Blacklisted IP addresses
 
     // İstemci IP adresini al
-    const clientIp = (req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress) as string;
+    const clientIp = (req.headers['x-forwarded-for'] || req.connection.remoteAddress) as string;
     console.log(`Client IP Address: ${clientIp}`); // Hata ayıklama için IP adresini yazdır
 
     if (blacklist.includes(clientIp)) {
